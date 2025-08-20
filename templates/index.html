@@ -8,41 +8,58 @@
         body {
             background-color: #f5f7fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0;
             margin: 0;
-            height: 100vh;
+            padding: 0;
         }
 
-        h1 {
+        /* Header with button */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             background: linear-gradient(90deg, #004aad, #007bff);
             color: white;
             width: 100%;
-            text-align: center;
-            padding: 20px;
-            margin: 0;
+            padding: 15px 20px;
+            box-sizing: border-box;
+        }
+
+        .header h1 {
             font-size: 22px;
+            margin: 0;
+        }
+
+        .header button {
+            background: #ffc107;
+            color: #004aad;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .header button:hover {
+            background: #e0a800;
         }
 
         .instructions {
-            margin-top: 10px;
             text-align: center;
             font-size: 14px;
             color: #444;
             max-width: 800px;
+            margin: 10px auto;
             padding: 0 15px;
             line-height: 1.6;
         }
 
         .chat-container {
-            width: 100%;
             max-width: 800px;
+            margin: 20px auto;
             background: white;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border-radius: 10px;
-            margin-top: 20px;
             display: flex;
             flex-direction: column;
             height: 70vh;
@@ -95,7 +112,7 @@
             font-size: 14px;
         }
 
-        button {
+        button.send-btn {
             background: #007bff;
             color: white;
             border: none;
@@ -106,11 +123,10 @@
             transition: background 0.3s ease;
         }
 
-        button:hover {
+        button.send-btn:hover {
             background: #0056b3;
         }
 
-        /* Scrollbar styling */
         .messages::-webkit-scrollbar {
             width: 6px;
         }
@@ -122,7 +138,11 @@
 </head>
 <body>
 
-    <h1>Ask anything related to TCS annual report of 2024 and 2025</h1>
+    <div class="header">
+        <h1>TCS Annual Report Chatbot</h1>
+        <button onclick="viewAnnualReport()">View Annual Report</button>
+    </div>
+
     <div class="instructions">
         <p><strong>⚠️ Please ask a question related to TCS 2024–2025 annual report only.</strong></p>
         <p>✅ Make sure to include <b>"TCS"</b> in your question so I know it is related and I can answer correctly.</p>
@@ -130,10 +150,9 @@
 
     <div class="chat-container">
         <div class="messages" id="messages"></div>
-
         <div class="input-area">
             <input type="text" id="question" placeholder="Type your question here..." onkeypress="handleKey(event)">
-            <button onclick="sendQuestion()">Send</button>
+            <button class="send-btn" onclick="sendQuestion()">Send</button>
         </div>
     </div>
 
@@ -153,7 +172,6 @@
             const question = questionField.value.trim();
             if (!question) return;
 
-            // ✅ Check if "TCS" is included in the question
             if (!question.toLowerCase().includes("tcs")) {
                 addMessage("⚠️ Please include the word 'TCS' in your question so I can answer it.", "bot");
                 questionField.value = "";
@@ -177,9 +195,12 @@
         }
 
         function handleKey(e) {
-            if (e.key === "Enter") {
-                sendQuestion();
-            }
+            if (e.key === "Enter") sendQuestion();
+        }
+
+        function viewAnnualReport() {
+            // Make sure PDF is in static folder
+            window.open("https://www.tcs.com/content/dam/tcs/investor-relations/financial-statements/2024-25/ar/annual-report-2024-2025.pdf");
         }
     </script>
 
