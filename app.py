@@ -7,6 +7,11 @@ import os
 
 app = Flask(__name__)
 load_dotenv()
+# Load embeddings and FAISS index
+embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
+new_vector_store = FAISS.load_local(
+        "tcs_doc_index", embeddings, allow_dangerous_deserialization=True
+    )
 
 # Home page (frontend)
 @app.route("/")
@@ -18,11 +23,7 @@ def tcs_chatbot_api():
     data = request.get_json()
     question = data.get("tcs_question", "")
 
-    # Load embeddings and FAISS index
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-mpnet-base-v2")
-    new_vector_store = FAISS.load_local(
-        "tcs_doc_index", embeddings, allow_dangerous_deserialization=True
-    )
+    
 
     # Search for relevant context
     context = new_vector_store.similarity_search(question, k=1)
